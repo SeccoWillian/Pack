@@ -1,0 +1,60 @@
+<div ng-controller='estabelecimentoCtrl'>
+  <form>
+    <div class="form-group">
+        <input type="hidden" class="form-control" ng-model="est.id">
+        Estabelecimento:
+        <input type="text" class="form-control" placeholder="Nome do Estabelecimento" ng-model="est.nome">
+        CNPJ:
+        <input type="text" class="form-control" placeholder="Número do documento" ng-model="est.documento" ng-keyup="cnpj_mascara(est.documento)">
+        <div class="btn-group pane-one-third">
+          Login:
+          <input type="text" class="form-control" placeholder="Login" ng-model="est.login">
+        </div>
+        <div class="btn-group pane-one-third">
+          Senha:
+          <input type="password" class="form-control" placeholder="Password" ng-model="est.senha">
+        </div>
+        <div>
+          Endereço:
+          <input type="text" class="form-control" placeholder="Informe: Cidade, Rua, Número" ng-model="est.endereco" ng-blur="localizacao(est)">
+        </div>
+        <div class="btn-group pane-one-fourth">
+          Telefone:
+          <input type="tel" class="form-control" placeholder="Telefone" ng-model="est.telefone" ng-keyup="masc_tel(est.telefone)">
+        </div>
+        <div class="btn-group pane-one-fourth">
+          Especialidade
+          <select class="form-control" ng-model="est.especialidade">
+            <option>Odontologia</option>
+            <option>Medicina</option>
+            <option>Saúde e Beleza</option>
+            <option>Nutrição</option>
+            <option>Advocacia</option>
+          </select>
+        </div>
+        <div>
+          Site:
+          <input type="text" class="form-control" placeholder="Site" ng-model="est.site">
+          Email:
+          <input type="email" class="form-control" placeholder="Email" ng-model="est.email">
+        </div>
+        <div class="margem-top">
+            <div flow-init flow-files-added="processFiles($files)" flow-files-submitted="$flow.upload()" 
+                test-chunks="false">
+                <!-- flow-file-error="someHandlerMethod( $file, $message, $flow )"     ! need to implement-->
+                <div class="drop" flow-drop ng-class="dropClass" style="width: 100%; height: 50px; background-color: #E0FFFF">
+                    <!-- <span class="btn btn-default" flow-btn>Upload a imagem</span> -->
+                    <img class="img-rounded media-object pull-left" src="{{filePath}}" width="42" height="42" flow-btn>
+                    Clique na imagem
+                    <b>OU</b>
+                    Arraste aqui! <span class='icon icon-check' style='color:green' ng-show="arquivoSalvo"></span>
+                </div>
+            </div>
+        </div>
+        
+    <div class="form-actions margem-top">
+      <button type="submit" class="btn btn-form btn-default" ui-sref="inicial">Cancelar</button>
+      <button type="submit" class="btn btn-form btn-primary" ng-click="salvar(est)">Salvar</button>
+    </div>
+  </form>
+</div>

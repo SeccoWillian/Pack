@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <style>
+        form {
+            border: 3px solid #ffffff;
+            font-family: 'Open Sans', sans-serif;
+            font-size: 14px;
+        }
+
+        button {
+            cursor: pointer;
+            width: 100%;
+        }
+
+        button:hover {
+            opacity: 0.8;
+        }
+
+        #texto{
+            font-size: 12px;
+        }
+
+        .container {
+            padding: 16px;
+        }
+
+    </style>
+    <link rel="stylesheet" href="../css/photon.min.css">
+    <link rel="stylesheet" href="../css/main.css">
+  </head>
+
+  <body>
+    <form>
+      <div class="container">
+        <label style="margin-top: 20px"><b>Dados do Agendamento</b></label>
+        <div>
+          <p id="texto"></p>
+        </div>
+
+        <button type="submit" class="btn btn-form btn-large btn-positive" id="ok" style="margin-top: 10px">OK</button>
+      </div>
+
+      <div class="container" style="background-color:#f1f1f1; margin-top: 5px;">
+        <button class="btn btn-form btn-large btn-negative" id="delete">Excluir</button>
+      </div>
+
+    </form>
+    <script>
+      const {ipcRenderer} = require('electron')
+      var id_agendamento = 0;
+
+      document.getElementById("delete").addEventListener('click', function () {
+          var res = confirm('Você realmente deseja excluir esse agendamento?');
+          if(res){
+              ipcRenderer.send('excluir', id_agendamento)
+          }else{
+              ipcRenderer.send('excluir-toggle');
+          }
+      });
+
+      document.getElementById("ok").addEventListener('click', function () {
+          ipcRenderer.send('excluir-toggle');
+      });
+
+      ipcRenderer.on('excluir-ag', function(event, arg) {
+          id_agendamento = arg.id;
+          document.getElementById("texto").innerHTML = arg.texto;
+      });
+
+    </script>
+
+  </body>
+</html>

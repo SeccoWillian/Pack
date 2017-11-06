@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Agenda Aberta</title>
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="css/bootstrap.css"/>
+    <link rel="stylesheet" href="bower_components/ng-responsive-calendar/dist/css/calendar.min.css"/>
+
+    <link rel="stylesheet" href="css/photon.min.css">
+    <link rel="stylesheet" href="css/main.css">
+
+    <!-- Javascript -->
+    <script src="lib/angular.js"></script>
+    <script src="lib/angular-ui-router.js"></script>
+
+    <script src="js/app.js"></script>
+    <script src="js/routes.js"></script>
+    <script src="js/services.js"></script>
+    <script src="js/controllers.js"></script>
+
+    <script src="js/controllers/agenda_controller.js"></script>
+    <script src="js/controllers/configuracao_controller.js"></script>
+    <script src="js/controllers/estabelecimento_controller.js"></script>
+    <script src="js/controllers/localizacao_controller.js"></script>
+    <script src="js/controllers/login_controller.js"></script>
+    <script src="js/controllers/profissional_controller.js"></script>
+    <script src="js/controllers/pagamento_controller.js"></script>
+    <script src="js/controllers/servico_controller.js"></script>
+    <script src="js/controllers/promocao_controller.js"></script>
+
+    <!-- concatenated flow.js + ng-flow libraries -->
+    <script src="bower_components/ng-flow/dist/ng-flow-standalone.min.js"></script>
+    <!-- or include the files separately -->
+    <script src="bower_components/flow.js/dist/flow.min.js"></script>
+    <script src="bower_components/ng-flow/dist/ng-flow.min.js"></script>
+
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD_PrniNxRsaLy0xpomwxviI3oukEEACR8"></script>
+
+    <script src="lib/angular-locale_pt-br.js"></script>
+
+    <!-- Calendario -->
+    <script src="bower_components/ng-responsive-calendar/dist/js/calendar-tpls.js"></script>
+    <link rel="stylesheet" href="bower_components/ng-responsive-calendar/dist/css/calendar.css"></link>
+
+    <!-- Timedatapicker -->
+    <script src="lib/moment-with-locales.js"></script>
+    <script src="lib/angular-moment-picker.js"></script>
+    <link href="css/angular-moment-picker.css" rel="stylesheet">
+
+    <!-- Socket.io -->
+    <script src="http://104.207.144.60:8082/socket.io/socket.io.js"></script>
+    <script>
+      var socket = io('http://104.207.144.60:8082', {transports: ['websocket', 'polling', 'flashsocket']});
+    </script>
+
+  </head>
+  <body>
+    <div class="window" ng-app="app">
+
+      <!-- .toolbar-header sits at the top of your app -->
+      <header class="toolbar toolbar-header">
+        <div class="toolbar-actions">
+          <div class="btn-group">
+            <button class="btn btn-default" ui-sref="estabelecimento">
+              <p><span class="icon icon-suitcase"></span>
+              &nbsp;Estabelecimento</p>
+            </button>
+            <button class="btn btn-default" ui-sref="profissional">
+              <p><span class="icon icon-user"></span>
+              &nbsp;Profissional</p>
+            </button>
+            <button class="btn btn-default" ui-sref="servico">
+              <p><span class="icon icon-tools"></span>
+              &nbsp;Serviços</p>
+            </button>
+            <button class="btn btn-default" ui-sref="lista_profissional_agenda">
+              <p><span class="icon icon-book-open"></span>
+              &nbsp;Agenda</p>
+            </button>
+            <button class="btn btn-default" ui-sref="pagamentos">
+              <p><span class="icon icon-bag"></span>
+              &nbsp;Pagamentos</p>
+            </button>
+            <button class="btn btn-default" ui-sref="promocao">
+              <p><span class="icon icon-basket"></span>
+              &nbsp;Promoções</p>
+            </button>
+            <button class="btn btn-default" ui-sref="configuracao">
+              <p><span class="icon icon-cog"></span>
+              &nbsp;Configurações</p>
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <!-- Your app's content goes inside .window-content -->
+      <div class="window-content">
+        <div class="pane-group">
+          <div class="pane pane-sm sidebar">
+            <nav class="nav-group">
+              <h1 class="nav-group-title">Olá</h1>
+              <ul class="list-group">
+                <li class="list-group-item">
+                  <img class="img-circle media-object pull-left" data-ng-src="{{estabOrigem.img}}" data-err-src="img/user.png" width="52" height="52" ui-sref="estabelecimento">
+                  <div class="media-body">
+                    <strong>{{estabOrigem.nome}}</strong>
+                    <p>{{estabOrigem.especialidade}}</p>
+                  </div>
+                </li>
+              </ul>
+              <hr>
+              <h5 class="nav-group-title margem-top">Serviços mais buscados</h5>
+              <span class="nav-group-item" ng-if="!atendimentos[0]">
+                <h5 class="nav-group-title">
+                <span class="icon icon-record" style="color:#fff"></span>Sem dados</h5>
+              </span>
+              <span class="nav-group-item" ng-if="atendimentos[0]">
+                <h5 class="nav-group-title">
+                <span class="icon icon-record" style="color:#fc605b"></span>{{atendimentos[0].indice}}</h5>
+              </span>
+              <span class="nav-group-item" ng-if="atendimentos[1]">
+                <h5 class="nav-group-title">
+                <span class="icon icon-record" style="color:#fdbc40"></span>{{atendimentos[1].indice}}</h5>
+              </span>
+              <span class="nav-group-item" ng-if="atendimentos[2]">
+                <h5 class="nav-group-title">
+                <span class="icon icon-record" style="color:#34c84a"></span>{{atendimentos[2].indice}}</h5>
+              </span>
+              <span class="nav-group-item" ng-if="atendimentos[3]">
+                <h5 class="nav-group-title">
+                <span class="icon icon-record" style="color:#57acf5"></span>{{atendimentos[3].indice}}</h5>
+              </span>
+              <h5 class="nav-group-title margem-top">Você possui <b>{{totalAtendimentos}}</b> agendamentos.</h5>
+            </nav>
+          </div>
+          <div class="pane margens">
+            <ui-view></ui-view>
+          </div>
+        </div>
+      </div>
+      <footer class="toolbar toolbar-header">
+        <h1 class="title">Todos os direitos reservados <b>© Blue Apple Tecnologia</b> 2017</h1>
+      </footer>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <style>
+        form {
+            border: 3px solid #ffffff;
+            font-family: 'Open Sans', sans-serif;
+            font-size: 12px;
+        }
+
+        button {
+            cursor: pointer;
+            width: 100%;
+        }
+
+        button:hover {
+            opacity: 0.8;
+        }
+        .container {
+            padding: 16px;
+        }
+
+    </style>
+    <link rel="stylesheet" href="../css/photon.min.css">
+    <link rel="stylesheet" href="../css/main.css">
+  </head>
+
+  <body>
+    <form>
+      <div class="container">
+        <h2>Parcelas</h2>
+
+        <div class="btn-group" style="margin-top: 20px; width: 100%">
+          <b>Quantidade de Parcelas:</b>
+          <input type="number" class="form-control" placeholder="Parcelas" min="1" name="parcelas" id="parcelas" autofocus required>
+        </div>
+
+        <button type="submit" class="btn btn-form btn-large btn-positive" id="adicionar" style="margin-top: 20px">Confirmar</button>
+
+      </div>
+
+      <div class="container" style="background-color:#f1f1f1">
+        <button type="submit" class="btn btn-form btn-large btn-negative" id="cancelar" style="margin-top: 10px">Cancelar</button>
+      </div>
+    </form>
+    <script>
+      const {ipcRenderer} = require('electron')
+
+      document.getElementById("adicionar").addEventListener('click', function () {
+          var parcelas = document.getElementById("parcelas").value;
+          var add = parcelas;
+          ipcRenderer.send('parcelado', add)
+      });
+
+      document.getElementById("cancelar").addEventListener('click', function () {
+          document.getElementById("parcelas").value == '';
+          ipcRenderer.send('parcelado-toggle');
+      });
+
+    </script>
+
+  </body>
+</html>

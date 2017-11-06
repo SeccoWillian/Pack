@@ -1,0 +1,363 @@
+<div ng-controller='configuracaoCtrl'>
+	<form class="group-control">
+		<table>
+			<tr>
+				<td valign="top" style="width: 35%">
+					<div class="conteudo">
+						<input type="hidden" ng-model="conf.id">
+						<div class="cardBig margens">
+							Data Limite para Agendamento:
+							<div class="input-group"
+							    moment-picker="conf.data_limite"
+							    format="DD/MM/YYYY"
+							    locale="pt-br"
+							    min-view="month"
+						     	max-view="day">
+							    <span class="input-group-addon">
+							        <i class="icon icon-calendar"></i>
+							    </span>
+							    <input class="form-control"
+							           placeholder="Data Limite"
+							           ng-model="conf.data_limite"
+							           ng-model-options="{ updateOn: 'blur' }">
+							</div>
+						</div>
+
+						<div class="cardBig" style="margin-top: 10px;">
+							<ul class="nav nav-tabs" ng-init="tab('padrao')">
+							    <li ng-class="p_class"><a data-toggle="tab" ng-click="tab('padrao')">Normal</a></li>
+							    <li ng-class="s_class"><a data-toggle="tab" ng-click="tab('sabado')">Sábado</a></li>
+							    <li ng-class="d_class"><a data-toggle="tab" ng-click="tab('domingo')">Domingo</a></li>
+							</ul>
+							<div style="padding-left: 20px; padding-right: 20px; padding-top: 5px; padding-bottom: 15px;">
+								<div class="tab-content">
+    								<div ng-show="padrao" class="tab-pane fade in active">
+    									Horários de Atendimento <b>Normal</b>:
+										<div class="input-group"
+										    moment-picker="conf.hora_padrao.hora_inicio"
+										    format="HH:mm"
+										    locale="pt-br"
+										    min-view="day">
+										    <span class="input-group-addon">
+										        <i class="icon icon-clock"></i>
+										    </span>
+										    <input class="form-control"
+										           placeholder="Hora início"
+										           ng-model="conf.hora_padrao.hora_inicio"
+										           ng-model-options="{ updateOn: 'blur' }">
+										</div>
+
+										<div class="input-group"
+										    moment-picker="conf.hora_padrao.intervalo_inicio"
+										    format="HH:mm"
+										    locale="pt-br"
+										    min-view="day">
+										    <span class="input-group-addon">
+										        <i class="icon icon-clock"></i>
+										    </span>
+										    <input class="form-control"
+										           placeholder="Intervalo início"
+										           ng-model="conf.hora_padrao.intervalo_inicio"
+										           ng-model-options="{ updateOn: 'blur' }">
+										</div>
+
+										<div class="input-group"
+										    moment-picker="conf.hora_padrao.intervalo_fim"
+										    format="HH:mm"
+										    locale="pt-br"
+										    min-view="day">
+										    <span class="input-group-addon">
+										        <i class="icon icon-clock"></i>
+										    </span>
+										    <input class="form-control"
+										           placeholder="Intervalo fim"
+										           ng-model="conf.hora_padrao.intervalo_fim"
+										           ng-model-options="{ updateOn: 'blur' }">
+										</div>
+
+										<div class="input-group"
+										    moment-picker="conf.hora_padrao.hora_fim"
+										    format="HH:mm"
+										    locale="pt-br"
+										    min-view="day">
+										    <span class="input-group-addon">
+										        <i class="icon icon-clock"></i>
+										    </span>
+										    <input class="form-control"
+										           placeholder="Hora Final"
+										           ng-model="conf.hora_padrao.hora_fim"
+										           ng-model-options="{ updateOn: 'blur' }">
+										</div>
+    								</div>
+    								<div ng-show="sabado" class="tab-pane fade in active">
+    									Horários de Atendimento <b>Sábados</b>:
+										<div class="input-group"
+										    moment-picker="conf.hora_sabado.hora_inicio"
+										    format="HH:mm"
+										    locale="pt-br"
+										    min-view="day">
+										    <span class="input-group-addon">
+										        <i class="icon icon-clock"></i>
+										    </span>
+										    <input class="form-control"
+										           placeholder="Hora início"
+										           ng-model="conf.hora_sabado.hora_inicio"
+										           ng-model-options="{ updateOn: 'blur' }">
+										</div>
+
+										<div class="input-group"
+										    moment-picker="conf.hora_sabado.intervalo_inicio"
+										    format="HH:mm"
+										    locale="pt-br"
+										    min-view="day">
+										    <span class="input-group-addon">
+										        <i class="icon icon-clock"></i>
+										    </span>
+										    <input class="form-control"
+										           placeholder="Intervalo início"
+										           ng-model="conf.hora_sabado.intervalo_inicio"
+										           ng-model-options="{ updateOn: 'blur' }">
+										</div>
+
+										<div class="input-group"
+										    moment-picker="conf.hora_sabado.intervalo_fim"
+										    format="HH:mm"
+										    locale="pt-br"
+										    min-view="day">
+										    <span class="input-group-addon">
+										        <i class="icon icon-clock"></i>
+										    </span>
+										    <input class="form-control"
+										           placeholder="Intervalo fim"
+										           ng-model="conf.hora_sabado.intervalo_fim"
+										           ng-model-options="{ updateOn: 'blur' }">
+										</div>
+
+										<div class="input-group"
+										    moment-picker="conf.hora_sabado.hora_fim"
+										    format="HH:mm"
+										    locale="pt-br"
+										    min-view="day">
+										    <span class="input-group-addon">
+										        <i class="icon icon-clock"></i>
+										    </span>
+										    <input class="form-control"
+										           placeholder="Hora Final"
+										           ng-model="conf.hora_sabado.hora_fim"
+										           ng-model-options="{ updateOn: 'blur' }">
+										</div>
+    								</div>
+    								<div ng-show="domingo" class="tab-pane fade in active">
+    									Horários de Atendimento <b>Domingos</b>:
+										<div class="input-group"
+										    moment-picker="conf.hora_domingo.hora_inicio"
+										    format="HH:mm"
+										    locale="pt-br"
+										    min-view="day">
+										    <span class="input-group-addon">
+										        <i class="icon icon-clock"></i>
+										    </span>
+										    <input class="form-control"
+										           placeholder="Hora início"
+										           ng-model="conf.hora_domingo.hora_inicio"
+										           ng-model-options="{ updateOn: 'blur' }">
+										</div>
+
+										<div class="input-group"
+										    moment-picker="conf.hora_domingo.intervalo_inicio"
+										    format="HH:mm"
+										    locale="pt-br"
+										    min-view="day">
+										    <span class="input-group-addon">
+										        <i class="icon icon-clock"></i>
+										    </span>
+										    <input class="form-control"
+										           placeholder="Intervalo início"
+										           ng-model="conf.hora_domingo.intervalo_inicio"
+										           ng-model-options="{ updateOn: 'blur' }">
+										</div>
+
+										<div class="input-group"
+										    moment-picker="conf.hora_domingo.intervalo_fim"
+										    format="HH:mm"
+										    locale="pt-br"
+										    min-view="day">
+										    <span class="input-group-addon">
+										        <i class="icon icon-clock"></i>
+										    </span>
+										    <input class="form-control"
+										           placeholder="Intervalo fim"
+										           ng-model="conf.hora_domingo.intervalo_fim"
+										           ng-model-options="{ updateOn: 'blur' }">
+										</div>
+
+										<div class="input-group"
+										    moment-picker="conf.hora_domingo.hora_fim"
+										    format="HH:mm"
+										    locale="pt-br"
+										    min-view="day">
+										    <span class="input-group-addon">
+										        <i class="icon icon-clock"></i>
+										    </span>
+										    <input class="form-control"
+										           placeholder="Hora Final"
+										           ng-model="conf.hora_domingo.hora_fim"
+										           ng-model-options="{ updateOn: 'blur' }">
+										</div>
+    								</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="conteudo">
+						<div class="cardBig margens">
+							Horários em Datas Especiais:
+							<div class="input-group"
+							    moment-picker="esp.data"
+							    format="DD/MM/YYYY"
+							    locale="pt-br"
+							    min-view="month">
+							    <span class="input-group-addon">
+							        <i class="icon icon-calendar"></i>
+							    </span>
+							    <input class="form-control"
+							           placeholder="Data Especial"
+							           ng-model="esp.data"
+							           ng-model-options="{ updateOn: 'blur' }">
+							</div>
+
+							<div class="input-group"
+							    moment-picker="esp.hora_inicio"
+							    locale="pt-br"
+							    format="HH:mm"
+							    min-view="day">
+							    <span class="input-group-addon">
+							        <i class="icon icon-clock"></i>
+							    </span>
+							    <input class="form-control"
+							           placeholder="Hora início"
+							           ng-model="esp.hora_inicio"
+							           ng-model-options="{ updateOn: 'blur' }">
+							</div>
+
+							<div class="input-group"
+							    moment-picker="esp.intervalo_inicio"
+							    locale="pt-br"
+							    format="HH:mm"
+							    min-view="day">
+							    <span class="input-group-addon">
+							        <i class="icon icon-clock"></i>
+							    </span>
+							    <input class="form-control"
+							           placeholder="Intervalo início"
+							           ng-model="esp.intervalo_inicio"
+							           ng-model-options="{ updateOn: 'blur' }">
+							</div>
+
+							<div class="input-group"
+							    moment-picker="esp.intervalo_fim"
+							    locale="pt-br"
+							    format="HH:mm"
+							    min-view="day">
+							    <span class="input-group-addon">
+							        <i class="icon icon-clock"></i>
+							    </span>
+							    <input class="form-control"
+							           placeholder="Intervalo fim"
+							           ng-model="esp.intervalo_fim"
+							           ng-model-options="{ updateOn: 'blur' }">
+							</div>
+
+							<div class="input-group"
+							    moment-picker="esp.hora_fim"
+							    locale="pt-br"
+							    format="HH:mm"
+							    min-view="day">
+							    <span class="input-group-addon">
+							        <i class="icon icon-clock"></i>
+							    </span>
+							    <input class="form-control"
+							           placeholder="Hora Final"
+							           ng-model="esp.hora_fim"
+							           ng-model-options="{ updateOn: 'blur' }">
+							</div>
+							<div>Descrição:</div>
+						    <input type="text" class="form-control" placeholder="Descrição" ng-model="esp.nome">
+							<div class="form-actions margem-top">
+						      	<button type="submit" class="btn btn-form btn-positive" ng-click="addEspecial(esp)"><i class="icon icon-plus" style="color:white"></i>Adicionar</button>
+						    </div>
+						</div>
+					</div>
+					<div class="conteudo">
+						<div class="cardBig margens">
+							Cadastro de Feriado:
+							<div class="input-group"
+							    moment-picker="fer.dia"
+							    format="DD/MM/YYYY"
+							    locale="pt-br"
+							    min-view="month"
+						     	max-view="day">
+							    <span class="input-group-addon">
+							        <i class="icon icon-calendar"></i>
+							    </span>
+							    <input class="form-control"
+							           placeholder="Feriado"
+							           ng-model="fer.dia"
+							           ng-model-options="{ updateOn: 'blur' }">
+							</div>
+							<div>Nome do Feriado:</div>
+					        <input type="text" class="form-control" placeholder="Nome do Feriado" ng-model="fer.nome">
+							<div class="form-actions margem-top">
+					      		<button type="submit" class="btn btn-form btn-positive" ng-click="addFeriado(fer)"><i class="icon icon-plus" style="color:white"></i>Adicionar</button>
+					      	</div>
+						</div>
+					</div>	
+				</td>
+				<td  valign="top" style="width: 65%">
+					<table class="table-striped">
+						<thead>
+						    <tr>
+						      <th>Datas Especiais</th>
+						      <th>Feriados</th>
+						    </tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td valign="top">
+									<div ng-repeat="(key, especiais) in listaEspeciais">
+										<div>
+											{{especiais.data}}<br>
+											{{especiais.hora_inicio}} até 
+											{{especiais.intervalo_inicio}} e 
+											{{especiais.intervalo_fim}} até 
+											{{especiais.hora_fim}}<br>
+											{{especiais.nome}}
+										</div>
+										<div style="text-align: right; font-size: 16px; color:red;">
+											<span class="icon icon-cancel-squared" ng-click="deletarEspecial(key)"></span>
+										</div>
+									</div>
+								</td>
+								<td valign="top" style="border-left: solid; border-width: 1px; border-color: #D3D3D3;">
+									<div ng-repeat="(key, ferias) in listaFeriados">
+										<div>
+											{{ferias.dia}}<br>
+											{{ferias.nome}}
+										</div>
+										<div style="text-align: right; font-size: 16px; color:red;">
+											<span class="icon icon-cancel-squared" ng-click="deletarFeriado(key)"></span>
+										</div>
+									</div>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</td>
+			</tr>
+		</table>
+		<div class="form-actions" style="position: fixed; bottom:0px; margin-bottom:30px; right:0px; margin-right:25px;">
+			<button type="submit" class="btn btn-form btn-default" ng-click="cancelar()">Cancelar</button>
+			<button type="submit" class="btn btn-form btn-primary" ng-click="salvar(conf)">Salvar</button>
+		</div>
+	</form>
+</div>

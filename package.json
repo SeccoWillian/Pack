@@ -1,0 +1,27 @@
+{
+  "name": "Agenda-Aberta",
+  "version": "1.0.0",
+  "description": "Electron application",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": "",
+  "keywords": [
+    "Electron"
+  ],
+  "author": "Willian",
+  "license": "CC0-1.0",
+  "devDependencies": {
+    "electron": "^1.4.1",
+    "electron-packager": "^8.1.0"
+  },
+  "scripts": {
+    "mac": "electron-packager . --overwrite --platform=darwin --arch=x64 --icon=icon/icon.icns --prune=true --out=release",
+    "windows": "electron-packager . --overwrite --asar=true --platform=win32 --arch=ia32 --icon=icon/icon.ico --prune=true --out=release --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"Agenda Aberta\"",
+    "linux" : "electron-packager . --overwrite --platform=linux --arch=x64 --icon=icon/linux/128x128.png --prune=true --out=release"
+  },
+  "dependencies": {
+    "node-notifier": "^5.1.2"
+  }
+}

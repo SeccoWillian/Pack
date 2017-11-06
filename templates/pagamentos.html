@@ -1,0 +1,42 @@
+<div ng-controller='pagamentosCtrl'>
+<div class="aparecer" style="width: 50%; float: left; background-color: #696969; color: #FFFFFF;"><b>Pagamentos em Aberto</b></div>
+	<div class="aparecer" style="width: 10%; float: left;">&nbsp;</div>
+	<div class="aparecer" style="width: 40%; float: left; background-color: #696969; color: #FFFFFF;" ng-if="parcelaAtiva"><b>Parcelas</b></div>
+  	<div class="form-group" style="height: 100%; width: 50%; clear: both; float: left;">
+        <ul class="list-group">
+            <li class="card margens" ng-repeat="aberto in abertos" style="width: 100%; margin-bottom: 5px" ng-style="aberto.parcelado && { 'background' : '#FFFF99' } || !aberto.pago && { 'background' : 'white' }">
+            	<div style="float: left">
+	            	<strong>{{aberto.title}}</strong>
+		            <div ng-repeat="pessoa in pessoas">
+		                <p ng-if="aberto.id_pessoa == pessoa.id">Cliente: {{pessoa.nome}} {{pessoa.sobrenome}}<br>Telefone: {{pessoa.telefone}}</p>
+		            </div>
+		            <p ng-if="aberto.id_pessoa == 0">Cliente: {{aberto.observacao}}</p>
+		            <p>Dia: {{aberto.startTime | date}}</p>
+	            </div>
+	            <div style="text-align: right;" ng-if="!aberto.pago">
+	            	<div style="text-align: right;" ng-if="!aberto.parcelado">
+	              		<button class="btn btn-default" ng-click="pagar(aberto)" title="Pagar"><span style="color:green">Pagar</span></button>
+	              		<button class="btn btn-default" ng-click="parcelado(aberto)" title="Parcelar"><span style="color:red">Parcelar</span></button>
+	              	</div>
+	            </div>
+	            <div style="text-align: right;" ng-if="aberto.parcelado">
+              		<button class="btn btn-default" ng-click="verParcela(aberto.id, aberto.id_servico)" title="Ver Parcelas"><span style="color:green">Ver Parcelas</span></button>
+              	</div>
+        	</li>
+    	</ul>
+  	</div>
+    <div style="width: 10%; height: 400px; float: left;">&nbsp;</div>
+    <div class="form-group" style="height: 100%; width: 40%; float: left;" ng-if="parcelaAtiva">
+        <div ng-repeat="n in [].constructor(pagamentoParcela.parcelas - pagamentoParcela.pagas) track by $index">
+		    <ul class="list-group">
+            	<li class="card margens" style="width: 100%; margin-bottom: 5px; background-color: #FFFF99">
+            		<h6>Parcela {{$index+1}}</h6>
+            		<h4>{{servico.preco / pagamentoParcela.parcelas | currency}}</h4>
+            		<div style="text-align: right;">
+	              		<button class="btn btn-default" ng-click="pagarParcela(pagamentoParcela.id_agenda, servico, pagamentoParcela.parcelas, pagamentoParcela.pagas)" title="Pagar"><span style="color:green">Pagar</span></button>
+	              	</div>
+            	</li>
+            </ul>
+		</div>
+    </div>
+</div>

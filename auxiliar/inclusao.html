@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <style>
+        form {
+            border: 3px solid #f1f1f1;
+            font-family: 'Open Sans', sans-serif;
+            font-size: 12px;
+        }
+
+        button {
+            cursor: pointer;
+            width: 100%;
+        }
+
+        button:hover {
+            opacity: 0.8;
+        }
+        .container {
+            padding: 16px;
+        }
+
+    </style>
+    <link rel="stylesheet" href="../css/photon.min.css">
+    <link rel="stylesheet" href="../css/main.css">
+  </head>
+
+  <body style="background-color:#ffffff;">
+    <form>
+      <div class="container">
+        <input type="hidden" id="id" value="0">
+
+        <div class="btn-group" style="margin-top: 20px; width: 100%">
+          <b>Dados Pessoais:</b>
+          <input type="text" class="form-control" placeholder="Identificação pessoal" name="nome" id="nome" autofocus required>
+        </div>
+        <div class="btn-group" style="margin-top: 10px; width: 100%">
+          <b>Serviço:</b>
+          <select class="form-control" placeholder="Escolha um serviço" name="serv" id="servico" required>
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-form btn-large btn-positive" id="adicionar" style="margin-top: 20px">Adicionar</button>
+
+      </div>
+
+      <div class="container" style="background-color:#f1f1f1">
+        <button type="submit" class="btn btn-form btn-large btn-negative" id="cancelar" style="margin-top: 10px">Cancelar</button>
+      </div>
+    </form>
+    <script>
+      const {ipcRenderer} = require('electron')
+      var qtd = 0;
+
+      var excluirOpcoes = ()=>{
+          var selectobject = document.getElementById("servico");
+          for (var i=0; i<qtd; i++){
+             selectobject[0].remove();
+          }
+      };
+
+      document.getElementById("adicionar").addEventListener('click', function () {
+          var nome = document.getElementById("nome").value;
+          var servico = document.getElementById("servico").value;
+          var id = document.getElementById("id").value;
+          var add = {id:id, nome: nome, servico:servico};
+          excluirOpcoes();
+          ipcRenderer.send('incluir', add)
+      });
+
+      document.getElementById("cancelar").addEventListener('click', function () {
+          excluirOpcoes();
+          ipcRenderer.send('incluir-toggle');
+      });
+
+      ipcRenderer.on('incluir-ag', function(event, arg) {
+          qtd = arg.length;
+          var sel = document.getElementById("servico");
+          for(var i=0; i<qtd; i++){
+              var option = document.createElement("option");
+              option.text = arg[i].nome;
+              option.value = arg[i].id;
+              sel.add(option);
+          }
+      });
+
+    </script>
+
+  </body>
+</html>

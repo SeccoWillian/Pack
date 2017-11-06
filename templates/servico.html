@@ -1,0 +1,39 @@
+<div ng-controller='servicoCtrl'>
+  <div class="aparecer" style="width: 50%; float: left; background-color: #696969; color: #FFFFFF;"><b>CADASTRO</b></div>
+  <div class="aparecer" style="width: 10%; float: left;">&nbsp;</div>
+  <div class="aparecer" style="width: 40%; float: left; background-color: #696969; color: #FFFFFF;"><b>SERVIÇOS</b></div>
+  <form>
+      <div class="form-group" style="float: left; height: 100%; width: 50%;">
+          <input type="hidden" class="form-control" ng-model="serv.id">
+          Nome:
+          <input type="text" class="form-control" placeholder="Nome do Serviço" ng-model="serv.nome">
+          <div class="btn-group pane-one-third">
+            Duração:
+            <input type="text" class="form-control" placeholder="Duração (minutos)" ng-model="serv.duracao">
+          </div>
+          <div class="btn-group pane-one-third">
+            Preço:
+            <input type="text" class="form-control" placeholder="Preço" ng-model="serv.preco" ng-keyUp="mascaraMoeda(serv.preco)">
+          </div>
+          <div class="form-actions margem-top">
+            <button type="submit" class="btn btn-form btn-default" ng-click="cancelar()">Cancel</button>
+            <button type="submit" class="btn btn-form btn-primary" ng-click="salvar(serv)">Salvar</button>
+          </div>
+      </div>
+  </form>
+  <div style="width: 10%; height: 400px; float: left;">&nbsp;</div>
+  <div class="form-group" style="height: 100%; width: 40%; float: left;">
+      <ul class="list-group">
+        <li class="card margens" ng-repeat="sv in svs" style="width: 100%;">
+            <div style="float: left" ng-click="atualizar(sv)">
+                <strong>{{sv.nome}}</strong>
+                <p>Duração: {{sv.duracao}}</p>
+                <p>Preço: {{sv.preco | currency}}</p>
+            </div>
+            <div style="text-align: right;">
+              <button class="btn btn-default" ng-click="excluir(sv.id)" title="Excluir"><span class="icon icon-cancel-circled" style="color:red"></span></button>
+            </div>
+        </li>
+    </ul>
+  </div>
+</div>

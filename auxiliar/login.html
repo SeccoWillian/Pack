@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+</head>
+<style>
+form {
+    border: 3px solid #f1f1f1;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 12px;
+}
+
+input[type=text], input[type=password] {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+button {
+    cursor: pointer;
+    width: 100%;
+}
+
+button:hover {
+    opacity: 0.8;
+}
+
+
+.imgcontainer {
+    text-align: center;
+    margin: 24px 0 12px 0;
+}
+
+img.avatar {
+    width: 40%;
+    border-radius: 50%;
+}
+
+.container {
+    padding: 16px;
+}
+
+</style>
+<link rel="stylesheet" href="../css/photon.min.css">
+<link rel="stylesheet" href="../css/main.css">
+<body style="background-color:#ffffff;">
+
+<form>
+  <div class="imgcontainer">
+    <img src="../img/agenda.png" alt="Avatar" class="avatar">
+  </div>
+
+  <div class="container">
+    <div class="btn-group" style="width: 100%">
+      Login:
+      <input type="text" class="form-control" placeholder="Entre com o usuário" id="login" autofocus required>
+    </div>
+    <div class="btn-group" style="width: 100%">
+      Senha:
+      <input type="password" class="form-control" placeholder="Digite a senha" id="senha" required>
+    </div>
+
+    <button type="submit" class="btn btn-form btn-large btn-positive" id="logar" style="margin-top: 10px">Logar</button>
+  </div>
+
+  <div class="container" margin-top: 5px;">
+    <button class="btn btn-form btn-large btn-negative" id="cancelar">Cancelar</button>
+  </div>
+</form>
+<div style="text-align: right; margin-top: 20px; margin-right: 20px;">
+  <span>Esqueci minha <a href="#" id="esqueci">senha!</a></span>
+</div>
+<script>
+  const {ipcRenderer} = require('electron')
+
+  document.getElementById("logar").addEventListener('click', function () {
+      var login = document.getElementById("login").value;
+      var senha = document.getElementById("senha").value;
+
+      var log = {login:login, senha:senha};
+
+      ipcRenderer.send('login', log)
+  });
+
+  document.getElementById("cancelar").addEventListener('click', function () {
+      ipcRenderer.send('fechar-programa');
+  });
+
+  document.getElementById("esqueci").addEventListener('click', function () {
+      var login = document.getElementById("login").value;
+      if(login == ''){
+          alert('Necessário informar o nome do usuário no campo de login.');
+      }else{
+          ipcRenderer.send('loading-toggle');
+          var xhr = new XMLHttpRequest();
+          xhr.open("POST", 'http://localhost:8082/api/mailler', true);
+          xhr.setRequestHeader('Content-Type', 'application/json');
+          xhr.send(JSON.stringify({
+              login: login
+          }));
+          xhr.onreadystatechange = function () {
+              if(xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+                  ipcRenderer.send('loading-toggle');
+                  alert('Em alguns instantes sua nova senha estará disponível em seu e-mail, caso isso não acontecer, repita o processo ou entre em contato conosco.');
+              }
+          };
+      }
+  });
+
+</script>
+
+</body>
+</html>

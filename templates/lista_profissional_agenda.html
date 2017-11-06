@@ -1,0 +1,15 @@
+<div ng-controller='listaProfissionalAgendaCtrl'>
+	<ul class="list-group">
+	    <li class="card margens" ng-repeat="profissionais in lista" style="width: 100%;">
+	    	<div style="float: left;" ng-click="atualizar(profissionais)">
+		    	<input type="hidden" ng-model="profissionais.id">
+		    	<img class="img-rounded media-object pull-left" data-ng-src="{{profissionais.img}}" data-err-src="img/user.png" width="52" height="52">
+		    	<div class="media-body">
+		        	<strong>{{profissionais.nome}} {{profissionais.sobrenome}}</strong>
+		        	<p>{{profissionais.email}}</p>
+		        	<p>{{profissionais.telefone}}</p>
+		      	</div>
+		    </div>
+	    </li><hr>
+	</ul>
+</div>
