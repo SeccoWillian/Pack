@@ -20,7 +20,7 @@ function createWindow(icon_dir){
     protocol: 'file:',
     slashes: true
   }))
-  mainWindow.webContents.openDevTools()
+  //mainWindow.webContents.openDevTools()
 
   // acionado quando a tela é fechada.
   mainWindow.on('closed', function () {

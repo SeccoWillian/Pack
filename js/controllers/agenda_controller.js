@@ -1,12 +1,14 @@
 angular.module('agenda_controller', [])
 
-.controller('agendaCtrl', ['$scope', '$stateParams', '$fabricaEventos', '$timeout', '$filter', 'configuracao', 'lista_serv', 'profissional', '$rootScope', '$state', 'restful', '$token', 'preinicio',
-    function ($scope, $stateParams, $fabricaEventos, $timeout, $filter, configuracao, lista_serv, profissional, $rootScope, $state, restful, $token, preinicio) {
+.controller('agendaCtrl', ['$scope', '$state', '$stateParams', '$fabricaEventos', '$timeout', '$filter', 'configuracao', 'lista_serv', 'profissional', '$rootScope', '$state', 'restful', '$token', 'preinicio',
+    function ($scope, $state, $stateParams, $fabricaEventos, $timeout, $filter, configuracao, lista_serv, profissional, $rootScope, $state, restful, $token, preinicio) {
         const {ipcRenderer} = require('electron')
 
         var listaServicos = lista_serv.getListaServico().servico;
         var profissional = angular.copy(profissional.getProfissional());
         var configCopy = angular.copy(configuracao.getConfiguracao().configuracao);
+        $scope.incluido = true;
+        $scope.showhoras = false;
 
         var marcacao;
         socket.on('horario_agenda', function (data) {
@@ -36,6 +38,9 @@ angular.module('agenda_controller', [])
             angular.forEach(listaServicos, function(value, key){
                 if(value.id == arg.servico){
                     servicoInclusao = value;
+                    $timeout(function () {
+                        $scope.incluido = arg.habilitarBotao;
+                    }, 10);
                 }
             })
         });
@@ -131,10 +136,10 @@ angular.module('agenda_controller', [])
                     if(dadosPessoa !== null){
                         var texto;
                         if(typeof dadosPessoa.img == 'undefined' || dadosPessoa.img == ''){
-                            texto = '<div><img class="img-circle media-object pull-left" src="../img/user.png" data-err-src="img/user.png" width="52" height="52" ui-sref="estabelecimento"></div>'+
+                            texto = '<div style="background-color:#f1f1f1;"><img class="img-circle media-object pull-left" src="../img/user.png" data-err-src="img/user.png" width="52" height="52" ui-sref="estabelecimento"></div>'+
                             '<div>Informações: '+dadosPessoa.nome+' - '+dadosPessoa.telefone+'<br>Serviço: '+nomeEvento+'<br>Agendado por smartphone</div>';
                         }else{
-                            texto = '<div><img class="img-circle media-object pull-left" src="'+dadosPessoa.img+'" data-err-src="img/user.png" width="52" height="52" ui-sref="estabelecimento"></div>'+
+                            texto = '<div style="background-color:#f1f1f1;"><img class="img-circle media-object pull-left" src="'+dadosPessoa.img+'" data-err-src="img/user.png" width="52" height="52" ui-sref="estabelecimento"></div>'+
                             '<div>Informações: '+dadosPessoa.nome+' - '+dadosPessoa.telefone+'<br>Serviço: '+nomeEvento+'<br>Agendado por smartphone</div>';
                         }
                         var dados = {texto: texto, id: id};
@@ -153,6 +158,7 @@ angular.module('agenda_controller', [])
 
         var array_opcoes = [];
         var array_times = [];
+        var diaSelected = "";
 
         $scope.onTimeSelected = function (selectedTime, events, disabled) {
             moment.locale('pt-BR');
@@ -172,44 +178,44 @@ angular.module('agenda_controller', [])
                 }
             })
 
-            horarios_disponíveis = ()=>{
-
-                array_times.sort(function(a,b){
-                    return new Date(a.inicio) - new Date(b.inicio);
-                });
-
-                var init = moment(selectedTime).isSameOrAfter(new_inicio);
-                var init_int = moment(selectedTime).isSameOrBefore(new_intervalo_inicio);
-                var end_int = moment(selectedTime).isSameOrAfter(new_intervalo_fim);
-                var fim = moment(selectedTime).isSameOrBefore(new_fim);
-                var possivel = [];
-
-                if((init == true && init_int == true) || (end_int == true && fim == true)){
-                    angular.forEach(array_times, function(value, key){
-
-                        var calc = moment(selectedTime).add(listaServicos.duracao, 'm');
-
-                        if(key > 0){
-                            var inicial = moment(calc._i).isSameOrAfter(array_times[key-1].fim);
-                            var final = moment(calc._d).isSameOrBefore(value.inicio);
-                        }
-
-                        if((inicial == true && final == true)){
-                            possivel = {inicio: calc._i, fim: calc._d};
-                            array_opcoes.push(possivel);
-                            array_times.push(possivel);
-                            horarios_disponíveis();
-                        }else{
-                            selectedTime = value.fim;
-                        }
-
+            horarios_disponiveis = ()=>{
+                if($scope.incluido == false){
+                    array_times.sort(function(a,b){
+                        return new Date(a.inicio) - new Date(b.inicio);
                     });
+
+                    var init = moment(selectedTime).isSameOrAfter(new_inicio);
+                    var init_int = moment(selectedTime).isSameOrBefore(new_intervalo_inicio);
+                    var end_int = moment(selectedTime).isSameOrAfter(new_intervalo_fim);
+                    var fim = moment(selectedTime).isSameOrBefore(new_fim);
+                    var possivel = [];
+
+                    if((init == true && init_int == true) || (end_int == true && fim == true)){
+                        angular.forEach(array_times, function(value, key){
+
+                            var calc = moment(selectedTime).add(servicoInclusao.duracao, 'm');
+
+                            if(key > 0){
+                                var inicial = moment(calc._i).isSameOrAfter(array_times[key-1].fim);
+                                var final = moment(calc._d).isSameOrBefore(value.inicio);
+                            }
+
+                            if((inicial == true && final == true)){
+                                possivel = {inicio: calc._i, fim: calc._d};
+                                array_opcoes.push(possivel);
+                                array_times.push(possivel);
+                                horarios_disponiveis();
+                            }else{
+                                selectedTime = value.fim;
+                            }
+                        });
+                    }
                 }
             }
 
             // --------------PARAMETROS INICIAIS------------
 
-            var tipo = {titulo:listaServicos.nome, horaFim: listaServicos.duracao};
+            var tipo = {titulo: servicoInclusao.nome, horaFim: servicoInclusao.duracao};
 
             var data_limite = moment(configCopy.data_limite, "DD-MM-YYYY");
             var data_atual = moment(new Date(), "DD-MM-YYYY");
@@ -246,10 +252,10 @@ angular.module('agenda_controller', [])
                 if(moment(selectedTime).isSame(new Date(), 'day')){
                     if(moment(new Date()).isSameOrBefore(new_intervalo_fim)){
                         array_times.push({inicio: new_inicio_fim, fim: new_intervalo_inicio});
-                        horarios_disponíveis();
+                        horarios_disponiveis();
                     }
                 }else{
-                    horarios_disponíveis();
+                    horarios_disponiveis();
                 }
             }
 
@@ -298,10 +304,10 @@ angular.module('agenda_controller', [])
 
             $scope.horarioSelecionado = (hora)=>{
                 var tempoInicial = moment(hora).format("HH:mm");
-                var final = moment(hora).add(listaServicos.duracao, "minutes")._d;
+                var final = moment(hora).add(servicoInclusao.duracao, "minutes")._d;
                 var inicio = hora;
                 if(data_possivel){
-                    var res = confirm('Você deseja reservar o serviço '+servico.nome+'? para este horário '+tempoInicial);
+                    var res = confirm('Você deseja reservar o serviço '+servicoInclusao.nome+'? para este horário '+tempoInicial);
 
                     if(res) {
                         var evento = {
@@ -320,7 +326,7 @@ angular.module('agenda_controller', [])
                         $fabricaEventos.setEvento(evento);
                         $scope.selecionarPeriodos();
                         $scope.onTimeSelected(hora);
-                        $scope.changeMode('month');
+                        $state.go('lista_profissional_agenda');
                     }
                 }else{
                     alert(alerta_data);
@@ -333,13 +339,18 @@ angular.module('agenda_controller', [])
         }
 
         $scope.selecionarPeriodos = ()=>{
+            $scope.showhoras = true;
             if(array_opcoes.length == 0){
-                $scope.onTimeSelected(new Date());
+                if(diaSelected == ""){
+                    $scope.onTimeSelected(new Date());
+                }else{
+                    $scope.onTimeSelected(diaSelected);
+                }
                 montador();
             }else{
                 montador();
             }
-            $scope.horariosDisponiveis = array_opcoes;
-            angular.extend($scope.horariosDisponiveis, array_opcoes);
+            //$scope.horariosDisponiveis = array_opcoes;
+            //angular.extend($scope.horariosDisponiveis, array_opcoes);
         }
 }])

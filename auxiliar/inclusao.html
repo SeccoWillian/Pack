@@ -64,7 +64,7 @@
           var nome = document.getElementById("nome").value;
           var servico = document.getElementById("servico").value;
           var id = document.getElementById("id").value;
-          var add = {id:id, nome: nome, servico:servico};
+          var add = {id:id, nome:nome, servico:servico, habilitarBotao:false};
           excluirOpcoes();
           ipcRenderer.send('incluir', add)
       });

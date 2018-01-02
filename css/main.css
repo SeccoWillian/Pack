@@ -1,13 +1,13 @@
 
 .margens{
-  padding-left:20px; 
-  padding-right:20px; 
-  padding-top:20px; 
+  padding-left:20px;
+  padding-right:20px;
+  padding-top:20px;
   padding-bottom:20px
 }
 
-.margem-top{ 
-  padding-top:10px; 
+.margem-top{
+  padding-top:10px;
 }
 
 .card {
@@ -51,6 +51,22 @@ td .conteudo {
 
 tr:hover {
   background-color: transparent;
+}
+
+.circlehora {
+  margin-left: 5px;
+  margin-bottom: 5px;
+  background-color: blue;
+  height: 52px;
+  width: 52px;
+  border-radius: 100%;
+}
+
+.alingvertical{
+    position: absolute;
+    margin-top: 16px;
+    margin-left: 8px;
+    color: white;
 }
 
 @keyframes fadeInOpacity {

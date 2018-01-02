@@ -207,8 +207,8 @@ angular.module('app.services', [])
                 preco: evento.preco,
                 id_pessoa: evento.pessoa,
                 title: evento.titulo,
-                startTime: horaInicio,
-                endTime: horaFim,
+                startTime: evento.minutoInicio,
+                endTime: evento.minutoFim,
                 observacao: evento.observacao,
                 allDay: false
             };
